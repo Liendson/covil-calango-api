@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.yugiapp</groupId>
-	<artifactId>yu-gi-app</artifactId>
+	<artifactId>covil-calango-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>yu-gi-app</name>
-	<description>API do Projeto Yu-Gi-App!</description>
+	<description>API do Projeto do Aplicativo Covil do Calango App!</description>
 	<url/>
 	<licenses>
 		<license/>
