@@ -1,5 +1,6 @@
 package br.com.yugiapp.controller;
 
+import br.com.yugiapp.dto.ComandaDTO;
 import br.com.yugiapp.service.ComandaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,9 @@ public class ComandaController {
 
     private final ComandaService comandaService;
 
-    @GetMapping
-    public String gerarComandaEntrada() {
-        return comandaService.gerarNumeroDaComanda();
+    @GetMapping(path = "/gerar/{nome}")
+    public ComandaDTO gerarComandaEntrada(@PathVariable String nome) {
+        return comandaService.gerarNumeroDaComanda(nome);
     }
 
     @PostMapping(path = "/fechar/{numero}")

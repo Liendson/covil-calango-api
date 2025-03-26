@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,4 +27,15 @@ public class Usuario implements Serializable {
 
     @Column(name = "CONTATO")
     private String contato;
+
+    @Column(unique = true)
+    private String email;
+
+    private String password;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Perfil> perfis;
 }

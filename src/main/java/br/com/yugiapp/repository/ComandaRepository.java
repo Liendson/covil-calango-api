@@ -4,8 +4,10 @@ import br.com.yugiapp.model.Comanda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ComandaRepository extends JpaRepository<Comanda, Long> {
 
-    Comanda findByNumero(String numero);
+    Optional<Comanda> findByNumero(String numero);
 }

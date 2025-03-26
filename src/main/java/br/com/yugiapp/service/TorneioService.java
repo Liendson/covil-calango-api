@@ -1,21 +1,37 @@
 package br.com.yugiapp.service;
 
 import br.com.yugiapp.model.Torneio;
+import br.com.yugiapp.repository.TorneioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface TorneioService {
+@Service
+@RequiredArgsConstructor
+public class TorneioService {
 
-    Page<Torneio> getAll(Pageable pageable);
+    private final TorneioRepository torneioRepository;
 
-    List<Torneio> getAll();
+    public Page<Torneio> getAll(Pageable pageable) {
+        return torneioRepository.findAll(pageable);
+    }
 
-    Torneio getById(Long id);
+    public List<Torneio> getAll() {
+        return torneioRepository.findAll();
+    }
 
-    void delete(Long id);
+    public Torneio getById(Long id) {
+        return torneioRepository.findById(id).orElseThrow();
+    }
 
-    Torneio save(Torneio torneio);
+    public void delete(Long id) {
+        torneioRepository.deleteById(id);
+    }
 
+    public Torneio save(Torneio torneio) {
+        return torneioRepository.save(torneio);
+    }
 }

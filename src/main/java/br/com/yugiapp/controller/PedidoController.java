@@ -1,5 +1,7 @@
 package br.com.yugiapp.controller;
 
+import br.com.yugiapp.dto.PedidoDTO;
+import br.com.yugiapp.dto.PedidoFilterDTO;
 import br.com.yugiapp.model.Pedido;
 import br.com.yugiapp.service.PedidoService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ public class PedidoController {
     private final PedidoService pedidoService;
 
     @PostMapping
-    public void salvar(@RequestBody Pedido pedido) {
+    public void salvar(@RequestBody PedidoDTO pedido) {
         pedidoService.save(pedido);
     }
 
@@ -25,8 +27,8 @@ public class PedidoController {
     }
 
     @GetMapping
-    public List<Pedido> getAll() {
-        return pedidoService.getAll();
+    public List<Pedido> getAll(PedidoFilterDTO pedidoFilterDTO) {
+        return pedidoService.getAllByFilters(pedidoFilterDTO);
     }
 
     @GetMapping(path = "{id}")

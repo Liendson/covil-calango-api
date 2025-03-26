@@ -1,20 +1,45 @@
 package br.com.yugiapp.service;
 
+import br.com.yugiapp.config.security.JwtTokenService;
+import br.com.yugiapp.dto.UsuarioConvidadoDTO;
 import br.com.yugiapp.model.Usuario;
+import br.com.yugiapp.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface UsuarioService {
+@Service
+@RequiredArgsConstructor
+public class UsuarioService {
 
-    Page<Usuario> getAll(Pageable pageable);
+    private final UsuarioRepository usuarioRepository;
+    private final JwtTokenService jwtTokenService;
 
-    List<Usuario> getAll();
+    public Page<Usuario> getAll(Pageable pageable) {
+        return usuarioRepository.findAll(pageable);
+    }
 
-    Usuario getById(Long id);
+    public List<Usuario> getAll() {
+        return usuarioRepository.findAll();
+    }
 
-    void delete(Long id);
+    public Usuario getById(Long id) {
+        return usuarioRepository.findById(id).orElseThrow();
+    }
 
-    Usuario save(Usuario usuario);
+    public void delete(Long id) {
+        usuarioRepository.deleteById(id);
+    }
+
+    public Usuario save(Usuario usuario) {
+        return usuarioRepository.save(usuario);
+    }
+
+    public UsuarioConvidadoDTO criarUsuarioConvidado(String nome) {
+        return UsuarioConvidadoDTO.builder().nome(nome).token(jwtTokenService.generateToken(nome)).build();
+    }
+
 }

@@ -37,6 +37,10 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "FK_PRODUTO")
     private Produto produto;
 
+    @ManyToOne
+    @JoinColumn(name = "FK_COMANDA")
+    private Comanda comanda;
+
     @Column(name = "QUANTIDADE")
     private Long quantidade;
 }

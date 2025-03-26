@@ -1,20 +1,37 @@
 package br.com.yugiapp.service;
 
 import br.com.yugiapp.model.Jogador;
+import br.com.yugiapp.repository.JogadorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface JogadorService {
+@Service
+@RequiredArgsConstructor
+public class JogadorService {
 
-    Page<Jogador> getAll(Pageable pageable);
+    private final JogadorRepository jogadorRepository;
 
-    List<Jogador> getAll();
+    public Page<Jogador> getAll(Pageable pageable) {
+        return jogadorRepository.findAll(pageable);
+    }
 
-    Jogador getById(Long id);
+    public List<Jogador> getAll() {
+        return jogadorRepository.findAll();
+    }
 
-    void delete(Long id);
+    public Jogador getById(Long id) {
+        return jogadorRepository.findById(id).orElseThrow();
+    }
 
-    Jogador save(Jogador jogador);
+    public void delete(Long id) {
+        jogadorRepository.deleteById(id);
+    }
+
+    public Jogador save(Jogador jogador) {
+        return jogadorRepository.save(jogador);
+    }
 }

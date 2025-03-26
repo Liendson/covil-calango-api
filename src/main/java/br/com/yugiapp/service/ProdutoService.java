@@ -1,20 +1,37 @@
 package br.com.yugiapp.service;
 
 import br.com.yugiapp.model.Produto;
+import br.com.yugiapp.repository.ProdutoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface ProdutoService {
+@Service
+@RequiredArgsConstructor
+public class ProdutoService {
 
-    Page<Produto> getAll(Pageable pageable);
+    private final ProdutoRepository produtoRepository;
 
-    List<Produto> getAll();
+    public Page<Produto> getAll(Pageable pageable) {
+        return produtoRepository.findAll(pageable);
+    }
 
-    Produto getById(Long id);
+    public List<Produto> getAll() {
+        return produtoRepository.findAll();
+    }
 
-    void delete(Long id);
+    public Produto getById(Long id) {
+        return produtoRepository.findById(id).orElseThrow();
+    }
 
-    Produto save(Produto produto);
+    public void delete(Long id) {
+        produtoRepository.deleteById(id);
+    }
+
+    public Produto save(Produto produto) {
+        return produtoRepository.save(produto);
+    }
 }

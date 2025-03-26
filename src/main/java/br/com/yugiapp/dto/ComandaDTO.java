@@ -16,6 +16,8 @@ public class ComandaDTO implements Serializable {
 
     private String numero;
 
+    private UsuarioConvidadoDTO usuario;
+
     private LocalDateTime dataHoraEntrada;
 
     private LocalDateTime dataHoraSaida;

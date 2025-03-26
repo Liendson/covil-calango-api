@@ -1,23 +1,42 @@
 package br.com.yugiapp.service;
 
 import br.com.yugiapp.model.Liga;
+import br.com.yugiapp.repository.LigaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface LigaService {
+@Service
+@RequiredArgsConstructor
+public class LigaService {
 
-    Page<Liga> getAll(Pageable pageable);
+    private final LigaRepository ligaRepository;
 
-    List<Liga> getAll();
+    public Page<Liga> getAll(Pageable pageable) {
+        return ligaRepository.findAll(pageable);
+    }
 
-    Liga getById(Long id);
+    public List<Liga> getAll() {
+        return ligaRepository.findAll();
+    }
 
-    Optional<Liga> getVigente();
+    public Liga getById(Long id) {
+        return ligaRepository.findById(id).orElseThrow();
+    }
 
-    void delete(Long id);
+    public Optional<Liga> getVigente() {
+        return ligaRepository.findVigente();
+    }
 
-    Liga save(Liga liga);
+    public void delete(Long id) {
+        ligaRepository.deleteById(id);
+    }
+
+    public Liga save(Liga liga) {
+        return ligaRepository.save(liga);
+    }
 }
