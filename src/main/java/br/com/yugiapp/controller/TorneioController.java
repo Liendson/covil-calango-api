@@ -1,5 +1,6 @@
 package br.com.yugiapp.controller;
 
+import br.com.yugiapp.dto.TorneioFilterRequestDTO;
 import br.com.yugiapp.model.Torneio;
 import br.com.yugiapp.service.TorneioService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,8 @@ public class TorneioController {
     }
 
     @GetMapping
-    public List<Torneio> getAll() {
-        return torneioService.getAll();
+    public List<Torneio> getAll(TorneioFilterRequestDTO filterDTO) {
+        return torneioService.getAllByFilters(filterDTO);
     }
 
     @GetMapping(path = "{id}")

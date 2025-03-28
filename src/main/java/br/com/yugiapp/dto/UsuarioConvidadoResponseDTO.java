@@ -9,8 +9,9 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ParametroDTO {
+public class UsuarioConvidadoResponseDTO {
 
-    private String nome;
-    private String descricao;
+    String token;
+    String nome;
+
 }

@@ -26,6 +26,11 @@ public class Torneio implements Serializable {
     @Column(name = "NOME")
     private String nome;
 
+    @Column(name = "LOCAL")
+    // TODO: TROCAR POR ENUM
+    // @Enumerated(EnumType.STRING)
+    private String local;
+
     @Column(name = "TIER")
     @Enumerated(EnumType.ORDINAL)
     private TierTorneioEnum tier;

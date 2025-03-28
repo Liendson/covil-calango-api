@@ -1,6 +1,6 @@
 package br.com.yugiapp.service;
 
-import br.com.yugiapp.dto.ComandaDTO;
+import br.com.yugiapp.dto.ComandaResponseDTO;
 import br.com.yugiapp.enums.StatusComandaEnum;
 import br.com.yugiapp.model.Comanda;
 import br.com.yugiapp.model.Usuario;
@@ -21,7 +21,7 @@ public class ComandaService {
         return comandaRepository.findByNumero(numero).orElseThrow();
     }
 
-    public ComandaDTO gerarNumeroDaComanda(String nome) {
+    public ComandaResponseDTO gerarNumeroDaComanda(String nome) {
         LocalDateTime dataHoje = LocalDateTime.now();
         Usuario usuario = Usuario.builder().id(1L).nome(nome).build();
         Comanda comandaSemNumero = comandaRepository.save(
@@ -32,7 +32,7 @@ public class ComandaService {
                         .build());
         comandaSemNumero.setNumero(String.valueOf(dataHoje.getYear()) + dataHoje.getMonthValue() + dataHoje.getDayOfMonth() + comandaSemNumero.getId());
         Comanda comandaCompleta = comandaRepository.save(comandaSemNumero);
-        return ComandaDTO.builder()
+        return ComandaResponseDTO.builder()
                 .numero(comandaCompleta.getNumero())
                 .dataHoraEntrada(comandaCompleta.getDataHoraEntrada())
                 .usuario(usuarioService.criarUsuarioConvidado(usuario.getNome()))

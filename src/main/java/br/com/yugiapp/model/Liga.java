@@ -34,7 +34,10 @@ public class Liga implements Serializable {
     private Jogador campeao;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private List<Jogador> listaDeParticipantes;
+    @JoinTable(name = "tb_participantes",
+            joinColumns = @JoinColumn(name = "id_liga"),
+            inverseJoinColumns = @JoinColumn(name = "id_jogador"))
+    private List<Jogador> participantes;
 
     @Column(name = "PREMIACAO")
     private String premiacao;

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum RankingJogadorEnum {
+public enum RankingEnum {
 
     UNRANKED("Sem Ranking"),
     BRONZE("Bronze"),
@@ -17,12 +17,12 @@ public enum RankingJogadorEnum {
 
     private final String value;
 
-    public static RankingJogadorEnum fromValue(String value) {
-        for (RankingJogadorEnum s : RankingJogadorEnum.values()) {
+    public static RankingEnum fromValue(String value) {
+        for (RankingEnum s : RankingEnum.values()) {
             if (s.getValue().equals(value)) {
                 return s;
             }
         }
-        throw new IllegalArgumentException("Valor inválido para o RankingJogadorEnum: " + value);
+        throw new IllegalArgumentException("Valor inválido para o RankingEnum: " + value);
     }
 }

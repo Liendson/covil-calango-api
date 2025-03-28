@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ComandaDTO implements Serializable {
+public class ComandaResponseDTO implements Serializable {
 
     private String numero;
 
-    private UsuarioConvidadoDTO usuario;
+    private UsuarioConvidadoResponseDTO usuario;
 
     private LocalDateTime dataHoraEntrada;
 

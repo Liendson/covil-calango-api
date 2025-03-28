@@ -9,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class PedidoDTO {
+public class ProdutoRequestDTO {
 
-    private String comanda;
-    private String observacao;
-    private ProdutoDTO produto;
-    private Long quantidade;
+    private Long id;
+    private String nome;
+    private Long prazo;
 }

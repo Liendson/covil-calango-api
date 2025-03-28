@@ -9,9 +9,8 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ProdutoDTO {
+public class ParametroResponseDTO {
 
-    private Long id;
     private String nome;
-    private Long prazo;
+    private String descricao;
 }

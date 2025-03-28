@@ -1,6 +1,5 @@
 package br.com.yugiapp.config.security;
 
-import br.com.yugiapp.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -38,15 +38,14 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
 
     private String recoveryToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader != null) {
+        if (Objects.nonNull(authorizationHeader)) {
             return authorizationHeader.replace("Bearer ", "");
         }
         return null;
     }
 
     private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        return !requestURI.startsWith(JwtSecurityConfig.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED);
+        return !request.getRequestURI().startsWith(JwtSecurityConfig.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED);
     }
 
 }

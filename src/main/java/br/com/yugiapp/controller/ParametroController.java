@@ -1,6 +1,6 @@
 package br.com.yugiapp.controller;
 
-import br.com.yugiapp.dto.ParametroDTO;
+import br.com.yugiapp.dto.ParametroResponseDTO;
 import br.com.yugiapp.service.ParametroService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +16,9 @@ public class ParametroController {
     private final ParametroService parametroService;
 
     @GetMapping(path = "/{nome}")
-    public ParametroDTO findByNome(@PathVariable String nome) {
+    public ParametroResponseDTO findByNome(@PathVariable String nome) {
         return parametroService.findByNome(nome).map(p ->
-                ParametroDTO.builder()
+                ParametroResponseDTO.builder()
                         .nome(p.getNome())
                         .descricao(p.getDescricao())
                         .build())

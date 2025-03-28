@@ -34,8 +34,8 @@ public class Usuario implements Serializable {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "tb_usuario_perfil",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_perfil"))
     private List<Perfil> perfis;
 }

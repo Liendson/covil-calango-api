@@ -1,7 +1,7 @@
 package br.com.yugiapp.controller;
 
-import br.com.yugiapp.dto.PedidoDTO;
-import br.com.yugiapp.dto.PedidoFilterDTO;
+import br.com.yugiapp.dto.PedidoRequestDTO;
+import br.com.yugiapp.dto.PedidoFilterRequestDTO;
 import br.com.yugiapp.model.Pedido;
 import br.com.yugiapp.service.PedidoService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,9 @@ public class PedidoController {
     private final PedidoService pedidoService;
 
     @PostMapping
-    public void salvar(@RequestBody PedidoDTO pedido) {
+    public void salvar(@RequestBody PedidoRequestDTO pedido) {
+        // TODO: VALIDAR SE A COZINHA ESTÁ ABERTA
+        // TODO: CRIAR MÓDULO DE COZINHA COM STATUS ABERTA E FECHADA PARA RECEBER PEDIDOS
         pedidoService.save(pedido);
     }
 
@@ -27,8 +29,8 @@ public class PedidoController {
     }
 
     @GetMapping
-    public List<Pedido> getAll(PedidoFilterDTO pedidoFilterDTO) {
-        return pedidoService.getAllByFilters(pedidoFilterDTO);
+    public List<Pedido> getAll(PedidoFilterRequestDTO pedidoFilterRequestDTO) {
+        return pedidoService.getAllByFilters(pedidoFilterRequestDTO);
     }
 
     @GetMapping(path = "{id}")

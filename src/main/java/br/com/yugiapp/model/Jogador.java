@@ -1,6 +1,6 @@
 package br.com.yugiapp.model;
 
-import br.com.yugiapp.enums.RankingJogadorEnum;
+import br.com.yugiapp.enums.RankingEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +24,7 @@ public class Jogador implements Serializable {
 
     @Column(name = "RANKING")
     @Enumerated(EnumType.STRING)
-    private RankingJogadorEnum ranking;
+    private RankingEnum ranking;
 
     @Column(name = "CREDITOS")
     private Double creditos;

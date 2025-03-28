@@ -21,4 +21,4 @@ public enum StatusComandaEnum {
         throw new IllegalArgumentException("Valor inválido para o StatusComandaEnum: " + value);
     }
 
-    }
+}

@@ -1,7 +1,7 @@
 package br.com.yugiapp.service;
 
 import br.com.yugiapp.config.security.JwtTokenService;
-import br.com.yugiapp.dto.UsuarioConvidadoDTO;
+import br.com.yugiapp.dto.UsuarioConvidadoResponseDTO;
 import br.com.yugiapp.model.Usuario;
 import br.com.yugiapp.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +38,8 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public UsuarioConvidadoDTO criarUsuarioConvidado(String nome) {
-        return UsuarioConvidadoDTO.builder().nome(nome).token(jwtTokenService.generateToken(nome)).build();
+    public UsuarioConvidadoResponseDTO criarUsuarioConvidado(String nome) {
+        return UsuarioConvidadoResponseDTO.builder().nome(nome).token(jwtTokenService.generateToken(nome)).build();
     }
 
 }

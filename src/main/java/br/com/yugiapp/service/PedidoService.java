@@ -1,7 +1,7 @@
 package br.com.yugiapp.service;
 
-import br.com.yugiapp.dto.PedidoDTO;
-import br.com.yugiapp.dto.PedidoFilterDTO;
+import br.com.yugiapp.dto.PedidoRequestDTO;
+import br.com.yugiapp.dto.PedidoFilterRequestDTO;
 import br.com.yugiapp.enums.StatusPedidoEnum;
 import br.com.yugiapp.model.Pedido;
 import br.com.yugiapp.model.Produto;
@@ -27,8 +27,8 @@ public class PedidoService {
         return pedidoRepository.findAll(pageable);
     }
 
-    public List<Pedido> getAllByFilters(PedidoFilterDTO pedidoFilterDTO) {
-        return pedidoRepository.findAll(pedidoSpecifications.getSpecs(pedidoFilterDTO));
+    public List<Pedido> getAllByFilters(PedidoFilterRequestDTO pedidoFilterRequestDTO) {
+        return pedidoRepository.findAll(pedidoSpecifications.getSpecs(pedidoFilterRequestDTO));
     }
 
     public List<Pedido> getAll() {
@@ -43,14 +43,14 @@ public class PedidoService {
         pedidoRepository.deleteById(id);
     }
 
-    public Pedido save(PedidoDTO pedidoDTO) {
+    public Pedido save(PedidoRequestDTO pedidoRequestDTO) {
         return pedidoRepository.save(Pedido.builder()
                 .dataHora(LocalDateTime.now())
                 .status(StatusPedidoEnum.EM_ANDAMENTO)
-                .produto(Produto.builder().id(pedidoDTO.getProduto().getId()).build())
-                .observacao(pedidoDTO.getObservacao())
-                .quantidade(pedidoDTO.getQuantidade())
-                .comanda(comandaService.getByNumero(pedidoDTO.getComanda()))
+                .produto(Produto.builder().id(pedidoRequestDTO.getProduto().getId()).build())
+                .observacao(pedidoRequestDTO.getObservacao())
+                .quantidade(pedidoRequestDTO.getQuantidade())
+                .comanda(comandaService.getByNumero(pedidoRequestDTO.getComanda()))
                 .build());
     }
 }
