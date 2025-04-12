@@ -16,22 +16,15 @@ public class ComandaService {
 
     private final ComandaRepository comandaRepository;
     private final UsuarioService usuarioService;
+    private final LocalDateTime HOJE = LocalDateTime.now();
 
     public Comanda getByNumero(String numero) {
         return comandaRepository.findByNumero(numero).orElseThrow();
     }
 
-    public ComandaResponseDTO gerarNumeroDaComanda(String nome) {
-        LocalDateTime dataHoje = LocalDateTime.now();
+    public ComandaResponseDTO gerarComandaDTO(String nome) {
         Usuario usuario = Usuario.builder().id(1L).nome(nome).build();
-        Comanda comandaSemNumero = comandaRepository.save(
-                Comanda.builder()
-                        .dataHoraEntrada(LocalDateTime.now())
-                        .usuario(usuario)
-                        .status(StatusComandaEnum.ABERTA.getValue())
-                        .build());
-        comandaSemNumero.setNumero(String.valueOf(dataHoje.getYear()) + dataHoje.getMonthValue() + dataHoje.getDayOfMonth() + comandaSemNumero.getId());
-        Comanda comandaCompleta = comandaRepository.save(comandaSemNumero);
+        Comanda comandaCompleta = gerarComanda(usuario);
         return ComandaResponseDTO.builder()
                 .numero(comandaCompleta.getNumero())
                 .dataHoraEntrada(comandaCompleta.getDataHoraEntrada())
@@ -39,9 +32,31 @@ public class ComandaService {
                 .build();
     }
 
-    public void fecharComanda(String numero) {
-        Comanda comanda = comandaRepository.findByNumero(numero).orElseThrow();
-        comanda.setDataHoraSaida(LocalDateTime.now());
-        comanda.setStatus(StatusComandaEnum.FECHADA.getValue());
+    public Comanda gerarComanda(Usuario usuario) {
+        Comanda comandaSemNumero = comandaRepository.save(
+                Comanda.builder()
+                        .dataHoraEntrada(LocalDateTime.now())
+                        .usuario(usuario)
+                        .status(StatusComandaEnum.EM_ANALISE.getValue())
+                        .build());
+        comandaSemNumero.setNumero(String.valueOf(HOJE.getYear()) + HOJE.getMonthValue() + HOJE.getDayOfMonth() + comandaSemNumero.getId());
+        return comandaRepository.save(comandaSemNumero);
     }
+
+    public void alterarStatus(String numero, StatusComandaEnum statusComandaEnum) {
+        Comanda comandaAlterada = comandaRepository.findByNumero(numero).orElseThrow();
+        if (StatusComandaEnum.FECHADA.getValue().equals(statusComandaEnum.getValue())) {
+            comandaAlterada.setDataHoraSaida(HOJE);
+        }
+        if (StatusComandaEnum.ABERTA.getValue().equals(statusComandaEnum.getValue())) {
+            comandaAlterada.setDataHoraEntrada(HOJE);
+        }
+        comandaAlterada.setStatus(statusComandaEnum.getValue());
+        save(comandaAlterada);
+    }
+
+    public Comanda save(Comanda jogador) {
+        return comandaRepository.save(jogador);
+    }
+
 }

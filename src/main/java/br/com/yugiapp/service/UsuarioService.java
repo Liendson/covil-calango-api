@@ -42,4 +42,8 @@ public class UsuarioService {
         return UsuarioConvidadoResponseDTO.builder().nome(nome).token(jwtTokenService.generateToken(nome)).build();
     }
 
+    public Usuario obterUsuarioVisitante() {
+        return this.getById(1L);
+    }
+
 }

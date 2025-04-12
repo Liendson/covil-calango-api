@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum StatusComandaEnum {
 
+    EM_ANALISE("Em Análise"),
     ABERTA("Aberta"),
     FECHADA("Fechada");
 
