@@ -1,22 +1,41 @@
 package br.com.yugiapp.service;
 
+import br.com.yugiapp.Constantes;
+import br.com.yugiapp.converter.ComandaConverter;
+import br.com.yugiapp.dto.ComandaFilterRequestDTO;
 import br.com.yugiapp.dto.ComandaResponseDTO;
+import br.com.yugiapp.dto.PedidoFilterRequestDTO;
 import br.com.yugiapp.enums.StatusComandaEnum;
+import br.com.yugiapp.enums.StatusPedidoEnum;
 import br.com.yugiapp.model.Comanda;
+import br.com.yugiapp.model.Pedido;
 import br.com.yugiapp.model.Usuario;
 import br.com.yugiapp.repository.ComandaRepository;
+import br.com.yugiapp.specs.ComandaSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = { @Lazy })
 public class ComandaService {
 
     private final ComandaRepository comandaRepository;
+    private final ComandaSpecifications comandaSpecifications;
+    private final ComandaConverter comandaConverter;
     private final UsuarioService usuarioService;
+    private final PedidoService pedidoService;
     private final LocalDateTime HOJE = LocalDateTime.now();
+
+    public List<ComandaResponseDTO> getAllByFilters(ComandaFilterRequestDTO pedidoFilterRequestDTO) {
+        return comandaRepository.findAll(comandaSpecifications.getSpecs(pedidoFilterRequestDTO))
+                .stream()
+                .map(comandaConverter::toResponseDTO)
+                .toList();
+    }
 
     public Comanda getByNumero(String numero) {
         return comandaRepository.findByNumero(numero).orElseThrow();
@@ -53,6 +72,14 @@ public class ComandaService {
         }
         comandaAlterada.setStatus(statusComandaEnum.getValue());
         save(comandaAlterada);
+    }
+
+    public Double obterValorTotalDaComanda(Comanda comanda, Boolean temPassaporte) {
+        PedidoFilterRequestDTO filtros = PedidoFilterRequestDTO.builder().comanda(comanda.getNumero()).status(
+                List.of(StatusPedidoEnum.SOLICITADO.name(), StatusPedidoEnum.EM_ANDAMENTO.name())).build();
+        List<Pedido> pedidosDaComanda = pedidoService.getAllByFilters(filtros);
+        Double valorTotal = pedidosDaComanda.stream().map(p -> (p.getProduto().getValor()) * p.getQuantidade()).reduce(0.0, Double::sum);
+        return temPassaporte ? valorTotal + Constantes.VALOR_PASSAPORTE : valorTotal;
     }
 
     public Comanda save(Comanda jogador) {

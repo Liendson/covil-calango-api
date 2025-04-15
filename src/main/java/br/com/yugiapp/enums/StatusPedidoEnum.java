@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum StatusPedidoEnum {
 
+    SOLICITADO("Solicitado"),
     EM_ANDAMENTO("Em Andamento"),
     PRONTO("Pronto"),
     FINALIZADO("Finalizado"),

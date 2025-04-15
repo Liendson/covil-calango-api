@@ -1,7 +1,7 @@
 package br.com.yugiapp.service;
 
-import br.com.yugiapp.dto.PedidoRequestDTO;
 import br.com.yugiapp.dto.PedidoFilterRequestDTO;
+import br.com.yugiapp.dto.PedidoRequestDTO;
 import br.com.yugiapp.enums.StatusPedidoEnum;
 import br.com.yugiapp.model.Pedido;
 import br.com.yugiapp.model.Produto;
@@ -46,11 +46,17 @@ public class PedidoService {
     public Pedido save(PedidoRequestDTO pedidoRequestDTO) {
         return pedidoRepository.save(Pedido.builder()
                 .dataHora(LocalDateTime.now())
-                .status(StatusPedidoEnum.EM_ANDAMENTO)
+                .status(StatusPedidoEnum.SOLICITADO)
                 .produto(Produto.builder().id(pedidoRequestDTO.getProduto().getId()).build())
                 .observacao(pedidoRequestDTO.getObservacao())
                 .quantidade(pedidoRequestDTO.getQuantidade())
                 .comanda(comandaService.getByNumero(pedidoRequestDTO.getComanda()))
                 .build());
+    }
+
+    public void alterarStatus(Long id, StatusPedidoEnum status) {
+        Pedido pedido = getById(id);
+        pedido.setStatus(status);
+        pedidoRepository.save(pedido);
     }
 }

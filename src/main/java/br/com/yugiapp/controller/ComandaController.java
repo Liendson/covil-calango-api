@@ -1,5 +1,6 @@
 package br.com.yugiapp.controller;
 
+import br.com.yugiapp.dto.ComandaFilterRequestDTO;
 import br.com.yugiapp.dto.ComandaResponseDTO;
 import br.com.yugiapp.enums.StatusComandaEnum;
 import br.com.yugiapp.model.Comanda;
@@ -7,12 +8,19 @@ import br.com.yugiapp.service.ComandaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/comanda")
 @RequiredArgsConstructor
 public class ComandaController {
 
     private final ComandaService comandaService;
+
+    @GetMapping
+    public List<ComandaResponseDTO> getByFilters(ComandaFilterRequestDTO comandaFilterRequestDTO) {
+        return comandaService.getAllByFilters(comandaFilterRequestDTO);
+    }
 
     @GetMapping(path = "/gerar/{nome}")
     public ComandaResponseDTO gerarComandaEntrada(@PathVariable String nome) {
