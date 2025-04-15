@@ -47,18 +47,18 @@ public class WebSocketComandaController {
         String topico = "/topic/comanda/" + solicitacao.getSessionId();
         if (StatusComandaEnum.EM_ANALISE.getValue().equals(solicitacao.getComanda().getStatus())) {
             comandaService.alterarStatus(solicitacao.getComanda().getNumero(), StatusComandaEnum.ABERTA);
-            solicitacaoService.alterarStatus(solicitacao, StatusSolicitacaoEnum.ACEITA);
         }
-        messagingTemplate.convertAndSend(topico, solicitacao);
+        messagingTemplate.convertAndSend(topico, solicitacaoService.alterarStatus(solicitacao, StatusSolicitacaoEnum.ACEITA));
     }
 
     @MessageMapping("/comanda/recusar")
     public void recusarSolicitacao(Solicitacao solicitacaoRequest) {
         Solicitacao solicitacao = solicitacaoService.getById(solicitacaoRequest.getId());
         String topico = "/topic/comanda/" + solicitacao.getSessionId();
+        comandaService.alterarStatus(solicitacao.getComanda().getNumero(), StatusComandaEnum.FECHADA);
         if (!StatusSolicitacaoEnum.EM_ANALISE.getValue().equals(solicitacao.getStatus())) {
             solicitacaoService.deleteById(solicitacao.getId());
         }
-        messagingTemplate.convertAndSend(topico, solicitacao);
+        messagingTemplate.convertAndSend(topico, solicitacaoService.alterarStatus(solicitacao, StatusSolicitacaoEnum.RECUSADA));
     }
 }

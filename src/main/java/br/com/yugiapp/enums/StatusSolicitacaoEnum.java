@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum StatusSolicitacaoEnum {
 
     EM_ANALISE("Em Análise"),
-    ACEITA("Aceita");
+    ACEITA("Aceita"),
+    RECUSADA("Recusada");;
 
     private final String value;
 

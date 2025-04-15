@@ -56,10 +56,10 @@ public class SolicitacaoService {
         return solicitacaoRepository.save(solicitacao);
     }
 
-    public void alterarStatus(Solicitacao solicitacao, StatusSolicitacaoEnum statusSolicitacaoEnum) {
+    public Solicitacao alterarStatus(Solicitacao solicitacao, StatusSolicitacaoEnum statusSolicitacaoEnum) {
         Solicitacao solicitacaoAlterada = solicitacaoRepository.findBySessionId(solicitacao.getSessionId()).orElseThrow();
         solicitacaoAlterada.setStatus(statusSolicitacaoEnum.getValue());
-        save(solicitacaoAlterada);
+        return save(solicitacaoAlterada);
     }
 
 }
