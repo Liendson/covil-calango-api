@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Builder
@@ -27,6 +29,9 @@ public class Solicitacao {
 
     @Column(name = "NOME")
     private String nome;
+
+    @Column(name = "DT_HORA")
+    private LocalDateTime dataHora;
 
     @ManyToOne
     @JoinColumn(name = "FK_COMANDA")

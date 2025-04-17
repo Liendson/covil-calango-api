@@ -33,7 +33,7 @@ public class ComandaController {
     }
 
     @GetMapping(path = "{numero}")
-    public Comanda getById(@PathVariable String numero) {
+    public Comanda getByNumero(@PathVariable String numero) {
         return comandaService.getByNumero(numero);
     }
 

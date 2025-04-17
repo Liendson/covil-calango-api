@@ -1,6 +1,7 @@
 package br.com.yugiapp.service;
 
 import br.com.yugiapp.dto.SolicitacaoFilterRequestDTO;
+import br.com.yugiapp.enums.StatusComandaEnum;
 import br.com.yugiapp.enums.StatusSolicitacaoEnum;
 import br.com.yugiapp.model.Comanda;
 import br.com.yugiapp.model.Solicitacao;
@@ -9,6 +10,7 @@ import br.com.yugiapp.specs.SolicitacaoSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,11 +45,10 @@ public class SolicitacaoService {
     }
 
     public Solicitacao buildNovaSolicitacao(String nome, String sessionId) {
-        Comanda comandaVisitante = comandaService.gerarComanda(usuarioService.obterUsuarioVisitante());
         return Solicitacao.builder()
                 .nome(nome)
                 .sessionId(sessionId)
-                .comanda(comandaVisitante)
+                .dataHora(LocalDateTime.now())
                 .status(StatusSolicitacaoEnum.EM_ANALISE.getValue())
                 .build();
     }
@@ -57,9 +58,25 @@ public class SolicitacaoService {
     }
 
     public Solicitacao alterarStatus(Solicitacao solicitacao, StatusSolicitacaoEnum statusSolicitacaoEnum) {
-        Solicitacao solicitacaoAlterada = solicitacaoRepository.findBySessionId(solicitacao.getSessionId()).orElseThrow();
+        Solicitacao solicitacaoAlterada = findBySessionId(solicitacao.getSessionId()).orElseThrow();
         solicitacaoAlterada.setStatus(statusSolicitacaoEnum.getValue());
         return save(solicitacaoAlterada);
+    }
+
+    public Solicitacao aceitarSolicitacao(Solicitacao solicitacao) {
+        if (StatusComandaEnum.EM_ANALISE.getValue().equals(solicitacao.getStatus())) {
+            Comanda comandaVisitante = comandaService.gerarComanda(usuarioService.obterUsuarioVisitante());
+            solicitacao.setComanda(comandaVisitante);
+            comandaService.alterarStatus(solicitacao.getComanda().getNumero(), StatusComandaEnum.ABERTA);
+        }
+        return alterarStatus(solicitacao, StatusSolicitacaoEnum.ACEITA);
+    }
+
+    public Solicitacao recusarSolicitacao(Solicitacao solicitacao) {
+        if (!StatusSolicitacaoEnum.EM_ANALISE.getValue().equals(solicitacao.getStatus())) {
+            deleteById(solicitacao.getId());
+        }
+        return alterarStatus(solicitacao, StatusSolicitacaoEnum.RECUSADA);
     }
 
 }

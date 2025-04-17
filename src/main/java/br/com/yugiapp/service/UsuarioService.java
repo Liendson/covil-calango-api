@@ -42,6 +42,7 @@ public class UsuarioService {
         return UsuarioConvidadoResponseDTO.builder().nome(nome).token(jwtTokenService.generateToken(nome)).build();
     }
 
+    // TODO: Remover para criar autenticação
     public Usuario obterUsuarioVisitante() {
         return this.getById(1L);
     }
