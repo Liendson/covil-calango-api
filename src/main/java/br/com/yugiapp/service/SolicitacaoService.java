@@ -64,12 +64,10 @@ public class SolicitacaoService {
     }
 
     public Solicitacao aceitarSolicitacao(Solicitacao solicitacao) {
-        if (StatusComandaEnum.EM_ANALISE.getValue().equals(solicitacao.getStatus())) {
-            Comanda comandaVisitante = comandaService.gerarComanda(usuarioService.obterUsuarioVisitante());
-            solicitacao.setComanda(comandaVisitante);
-            comandaService.alterarStatus(solicitacao.getComanda().getNumero(), StatusComandaEnum.ABERTA);
-        }
-        return alterarStatus(solicitacao, StatusSolicitacaoEnum.ACEITA);
+        Solicitacao solicitacaoAceita = alterarStatus(solicitacao, StatusSolicitacaoEnum.ACEITA);
+        Comanda comandaVisitante = comandaService.gerarComanda(usuarioService.obterUsuarioVisitante());
+        solicitacaoAceita.setComanda(comandaService.alterarStatus(comandaVisitante.getNumero(), StatusComandaEnum.ABERTA));
+        return solicitacaoAceita;
     }
 
     public Solicitacao recusarSolicitacao(Solicitacao solicitacao) {

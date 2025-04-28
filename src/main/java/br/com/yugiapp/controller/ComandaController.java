@@ -3,7 +3,6 @@ package br.com.yugiapp.controller;
 import br.com.yugiapp.dto.ComandaFilterRequestDTO;
 import br.com.yugiapp.dto.ComandaResponseDTO;
 import br.com.yugiapp.enums.StatusComandaEnum;
-import br.com.yugiapp.model.Comanda;
 import br.com.yugiapp.service.ComandaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +32,8 @@ public class ComandaController {
     }
 
     @GetMapping(path = "{numero}")
-    public Comanda getByNumero(@PathVariable String numero) {
-        return comandaService.getByNumero(numero);
+    public ComandaResponseDTO getByNumero(@PathVariable String numero) {
+        return comandaService.getResponseDTOByNumero(numero);
     }
 
 }

@@ -19,6 +19,7 @@ public class ComandaConverter {
                 .numero(entity.getNumero())
                 .dataHoraEntrada(entity.getDataHoraEntrada())
                 .dataHoraSaida(entity.getDataHoraSaida())
+                .status(entity.getStatus())
                 .valorTotal(comandaService.obterValorTotalDaComanda(entity, true)).build();
     }
 }

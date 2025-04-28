@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,5 +24,9 @@ public class ComandaResponseDTO implements Serializable {
     private LocalDateTime dataHoraSaida;
 
     private Double valorTotal;
+
+    private String status;
+
+    private List<PedidoResponseDTO> pedidos;
 
 }

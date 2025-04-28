@@ -1,7 +1,9 @@
 package br.com.yugiapp.service;
 
+import br.com.yugiapp.converter.PedidoConverter;
 import br.com.yugiapp.dto.PedidoFilterRequestDTO;
 import br.com.yugiapp.dto.PedidoRequestDTO;
+import br.com.yugiapp.dto.PedidoResponseDTO;
 import br.com.yugiapp.enums.StatusPedidoEnum;
 import br.com.yugiapp.model.Pedido;
 import br.com.yugiapp.model.Produto;
@@ -22,6 +24,7 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final ComandaService comandaService;
     private final PedidoSpecifications pedidoSpecifications;
+    private final PedidoConverter pedidoConverter;
 
     public Page<Pedido> getAll(Pageable pageable) {
         return pedidoRepository.findAll(pageable);
@@ -29,6 +32,10 @@ public class PedidoService {
 
     public List<Pedido> getAllByFilters(PedidoFilterRequestDTO pedidoFilterRequestDTO) {
         return pedidoRepository.findAll(pedidoSpecifications.getSpecs(pedidoFilterRequestDTO));
+    }
+
+    public List<PedidoResponseDTO> getAllResponseDTOByFilters(PedidoFilterRequestDTO pedidoFilterRequestDTO) {
+        return pedidoConverter.toResponseDTO(pedidoRepository.findAll(pedidoSpecifications.getSpecs(pedidoFilterRequestDTO)));
     }
 
     public List<Pedido> getAll() {

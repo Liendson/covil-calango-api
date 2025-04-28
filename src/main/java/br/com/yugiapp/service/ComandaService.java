@@ -41,6 +41,14 @@ public class ComandaService {
         return comandaRepository.findByNumero(numero).orElseThrow();
     }
 
+    public ComandaResponseDTO getResponseDTOByNumero(String numero) {
+        Comanda comanda = comandaRepository.findByNumero(numero).orElseThrow();
+        ComandaResponseDTO comandaResponseDTO = comandaConverter.toResponseDTO(comanda);
+        comandaResponseDTO.setPedidos(pedidoService.getAllResponseDTOByFilters(PedidoFilterRequestDTO.builder().comanda(numero).build()));
+        comandaResponseDTO.setValorTotal(obterValorTotalDaComanda(comanda, true));
+        return comandaResponseDTO;
+    }
+
     public ComandaResponseDTO gerarComandaDTO(String nome) {
         Usuario usuario = Usuario.builder().id(1L).nome(nome).build();
         Comanda comandaCompleta = gerarComanda(usuario);
@@ -62,7 +70,7 @@ public class ComandaService {
         return comandaRepository.save(comandaSemNumero);
     }
 
-    public void alterarStatus(String numero, StatusComandaEnum statusComandaEnum) {
+    public Comanda alterarStatus(String numero, StatusComandaEnum statusComandaEnum) {
         Comanda comandaAlterada = comandaRepository.findByNumero(numero).orElseThrow();
         if (StatusComandaEnum.FECHADA.getValue().equals(statusComandaEnum.getValue())) {
             comandaAlterada.setDataHoraSaida(HOJE);
@@ -71,7 +79,7 @@ public class ComandaService {
             comandaAlterada.setDataHoraEntrada(HOJE);
         }
         comandaAlterada.setStatus(statusComandaEnum.getValue());
-        save(comandaAlterada);
+        return save(comandaAlterada);
     }
 
     public Double obterValorTotalDaComanda(Comanda comanda, Boolean temPassaporte) {

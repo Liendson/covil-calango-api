@@ -33,7 +33,7 @@ public class PedidoController {
     }
 
     @GetMapping
-    public List<Pedido> getAll(PedidoFilterRequestDTO pedidoFilterRequestDTO) {
+    public List<Pedido> getAllByFilters(PedidoFilterRequestDTO pedidoFilterRequestDTO) {
         return pedidoService.getAllByFilters(pedidoFilterRequestDTO);
     }
 
