@@ -30,6 +30,10 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElseThrow();
     }
 
+    public Usuario getByEmail(String email) {
+        return usuarioRepository.findByEmail(email).orElseThrow();
+    }
+
     public void delete(Long id) {
         usuarioRepository.deleteById(id);
     }
@@ -38,6 +42,7 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    // TODO: Remover para criar autenticação
     public UsuarioConvidadoResponseDTO criarUsuarioConvidado(String nome) {
         return UsuarioConvidadoResponseDTO.builder().nome(nome).token(jwtTokenService.generateToken(nome)).build();
     }
