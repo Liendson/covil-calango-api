@@ -1,6 +1,7 @@
 package br.com.yugiapp.controller;
 
 import br.com.yugiapp.dto.SolicitacaoFilterRequestDTO;
+import br.com.yugiapp.dto.SolicitacaoRequestDTO;
 import br.com.yugiapp.model.Solicitacao;
 import br.com.yugiapp.service.SolicitacaoService;
 import lombok.RequiredArgsConstructor;
@@ -39,24 +40,21 @@ public class SolicitacaoController {
     }
 
     @MessageMapping("/solicitacao/solicitar")
-    public void solicitarComanda(String nome, Message<String> message) {
+    public void solicitarComanda(SolicitacaoRequestDTO solicitacaoRequestDTO, Message<String> message) {
         messagingTemplate.convertAndSend("/topic/solicitacoes", solicitacaoService.save(
-                solicitacaoService.buildNovaSolicitacao(nome.replaceAll("\"", ""),
-                        (String) message.getHeaders().get("simpSessionId"))));
+                solicitacaoService.buildNovaSolicitacao(solicitacaoRequestDTO, (String) message.getHeaders().get("simpSessionId"))));
     }
 
     @MessageMapping("/solicitacao/aceitar")
     public void aceitarSolicitacao(Solicitacao solicitacaoRequest) {
         Solicitacao solicitacao = solicitacaoService.getById(solicitacaoRequest.getId());
-        messagingTemplate.convertAndSend("/topic/comanda/" + solicitacao.getSessionId(),
-                solicitacaoService.aceitarSolicitacao(solicitacao));
+        messagingTemplate.convertAndSend("/topic/comanda/" + solicitacao.getSessionId(), solicitacaoService.aceitarSolicitacao(solicitacao));
     }
 
     @MessageMapping("/solicitacao/recusar")
     public void recusarSolicitacao(Solicitacao solicitacaoRequest) {
         Solicitacao solicitacao = solicitacaoService.getById(solicitacaoRequest.getId());
-        messagingTemplate.convertAndSend("/topic/comanda/" + solicitacao.getSessionId(),
-                solicitacaoService.recusarSolicitacao((solicitacao)));
+        messagingTemplate.convertAndSend("/topic/comanda/" + solicitacao.getSessionId(), solicitacaoService.recusarSolicitacao((solicitacao)));
     }
 
 }

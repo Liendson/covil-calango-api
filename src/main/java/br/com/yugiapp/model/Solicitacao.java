@@ -30,6 +30,9 @@ public class Solicitacao {
     @Column(name = "NOME")
     private String nome;
 
+    @Column(name = "EMAIL")
+    private String email;
+
     @Column(name = "DT_HORA")
     private LocalDateTime dataHora;
 

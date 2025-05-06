@@ -6,7 +6,7 @@ import br.com.yugiapp.model.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,15 +16,15 @@ public class AuthService {
 
     public Usuario login(LoginRequestDTO loginRequestDTO) throws Exception {
         if (TipoProviderAuthEnum.GOOGLE.getValue().equals(loginRequestDTO.getProvider())) {
-            // validar token recebido
-            // avaliar criação do usuário caso seja pelo Aplicativo
-            return usuarioService.getByEmail(loginRequestDTO.getEmail());
+            // TODO: validar token recebido
+            // TODO: avaliar criação do usuário caso seja pelo Aplicativo
+            return usuarioService.getByEmail(loginRequestDTO.getEmail()).orElseThrow();
         }
         if (TipoProviderAuthEnum.CREDENTIALS.getValue().equals(loginRequestDTO.getProvider())) {
-            // validar email e senha criptografados
-            Usuario usuario = usuarioService.getByEmail(loginRequestDTO.getEmail());
-            if (Objects.nonNull(usuario) && usuario.getPassword().equals(loginRequestDTO.getSenha())) {
-                return usuario;
+            // TODO: validar email e senha criptografados
+            Optional<Usuario> usuario = usuarioService.getByEmail(loginRequestDTO.getEmail());
+            if (usuario.isPresent() && usuario.get().getPassword().equals(loginRequestDTO.getSenha())) {
+                return usuario.get();
             }
             throw new Exception();
         }

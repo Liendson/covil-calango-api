@@ -2,6 +2,7 @@ package br.com.yugiapp.service;
 
 import br.com.yugiapp.config.security.JwtTokenService;
 import br.com.yugiapp.dto.UsuarioConvidadoResponseDTO;
+import br.com.yugiapp.model.Solicitacao;
 import br.com.yugiapp.model.Usuario;
 import br.com.yugiapp.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +32,8 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElseThrow();
     }
 
-    public Usuario getByEmail(String email) {
-        return usuarioRepository.findByEmail(email).orElseThrow();
+    public Optional<Usuario> getByEmail(String email) {
+        return usuarioRepository.findByEmail(email);
     }
 
     public void delete(Long id) {
@@ -47,9 +49,9 @@ public class UsuarioService {
         return UsuarioConvidadoResponseDTO.builder().nome(nome).token(jwtTokenService.generateToken(nome)).build();
     }
 
-    // TODO: Remover para criar autenticação
-    public Usuario obterUsuarioVisitante() {
-        return this.getById(1L);
+    public Usuario criarNovoUsuario(Solicitacao solicitacao) {
+        // TODO: ADICIONAR PERFIL PADRÃO
+        return usuarioRepository.save(Usuario.builder().nome(solicitacao.getNome()).email(solicitacao.getEmail()).build());
     }
 
 }

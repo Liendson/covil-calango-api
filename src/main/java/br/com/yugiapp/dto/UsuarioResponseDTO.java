@@ -21,5 +21,7 @@ public class UsuarioResponseDTO {
 
     private String password;
 
+    private String token;
+
     private List<String> perfis;
 }
